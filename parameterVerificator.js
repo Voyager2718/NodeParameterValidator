@@ -30,7 +30,11 @@ function isString(value) {
     return typeof value === 'string';
 }
 
-module.exports = (() => {
+function isRegExp(value) {
+    return value instanceof RegExp;
+}
+
+let ParameterVerificator = (() => {
     function ParameterVerificator() {
         this.patterns = {};
 
@@ -40,7 +44,7 @@ module.exports = (() => {
         }
 
         let checkRecursively = (target, value) => {
-            if (isDict(target)) {
+            if (isDict(target) && !isRegExp(target)) {
                 if (isDict(value)) {
                     if (Object.keys(target).length === 0 && settings.emptyDictImpliesAcceptEverything) {
                         return true;
@@ -99,6 +103,12 @@ module.exports = (() => {
                 } else {
                     return false;
                 }
+            } else if (isRegExp(target)) {
+                if (target.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else if (isString(target) || target === settings.escapingConfig.string) {
                 if (isString(value)) {
                     return true;
@@ -131,7 +141,6 @@ module.exports = (() => {
     }
 })();
 
-/**
 let p = ParameterVerificator.getInstance();
 p.setPattern('test',
     {
@@ -146,7 +155,8 @@ p.setPattern('test',
                 'Boolean',
                 []
             ]
-        }
+        },
+        regExpTest: /^Hello,\s[a-zA-Z]*!$/,
     }
 );
 
@@ -163,7 +173,7 @@ p.verify('test',
                 true,
                 []
             ]
-        }
+        },
+        regExpTest: 'Hello, World!'
     }
 );
- */
