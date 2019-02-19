@@ -34,7 +34,7 @@ function isRegExp(value) {
     return value instanceof RegExp;
 }
 
-let ParameterVerificator = (() => {
+module.exports = (() => {
     function ParameterVerificator() {
         this.patterns = {};
 
@@ -141,6 +141,9 @@ let ParameterVerificator = (() => {
     }
 })();
 
+/**
+  * Sample
+
 let p = ParameterVerificator.getInstance();
 p.setPattern('test',
     {
@@ -177,3 +180,4 @@ p.verify('test',
         regExpTest: 'Hello, World!'
     }
 );
+*/
