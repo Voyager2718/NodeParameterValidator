@@ -34,7 +34,7 @@ function isRegExp(value) {
     return value instanceof RegExp;
 }
 
-module.exports = (() => {
+let ParameterVerificator = (() => {
     function ParameterVerificator() {
         this.patterns = {};
 
@@ -92,29 +92,13 @@ module.exports = (() => {
                     return false;
                 }
             } else if (isNumber(target) || target === settings.escapingConfig.number) {
-                if (isNumber(value)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return isNumber(value);
             } else if (isBoolean(target) || target === settings.escapingConfig.boolean) {
-                if (isBoolean(value)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return isBoolean(value);
             } else if (isRegExp(target)) {
-                if (target.test(value)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return target.test(value);
             } else if (isString(target) || target === settings.escapingConfig.string) {
-                if (isString(value)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return isString(value);
             } else {
                 throw new Error('Unknown type.');
             }
@@ -140,9 +124,6 @@ module.exports = (() => {
         }
     }
 })();
-
-/**
-  * Sample
 
 let p = ParameterVerificator.getInstance();
 p.setPattern('test',
@@ -180,4 +161,3 @@ p.verify('test',
         regExpTest: 'Hello, World!'
     }
 );
-*/
